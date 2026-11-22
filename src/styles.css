@@ -584,7 +584,7 @@ button:disabled {
 }
 
 .field input {
-  width: 96px;
+  width: 130px;
   font: inherit;
   text-align: right;
   color: var(--text);

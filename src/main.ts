@@ -4,7 +4,7 @@ import { renderDeckList } from './ui/deckList';
 import { StudyView } from './ui/study';
 import { h } from './ui/dom';
 import { busy, confirmDialog, openSheet, pickFiles, saveFile, toast } from './ui/sheet';
-import { allCards } from './sched/queue';
+import { allCards, UNLIMITED } from './sched/queue';
 import { registerSW } from 'virtual:pwa-register';
 
 const app = document.getElementById('app')!;
@@ -108,10 +108,12 @@ function openBackup(): void {
 // ---------------------------------------------------------------- Einstellungen
 
 function numberField(label: string, value: number, onChange: (v: number) => void): HTMLElement {
-  const input = h('input', { type: 'number', inputmode: 'numeric', min: '0', max: '9999', value: String(value) });
+  const show = (v: number) => (v >= UNLIMITED ? '' : String(v));
+  const input = h('input', { type: 'number', inputmode: 'numeric', min: '0', placeholder: 'ohne Limit', value: show(value) });
   input.addEventListener('change', () => {
-    const v = Math.max(0, Math.min(9999, Math.round(Number(input.value) || 0)));
-    input.value = String(v);
+    const raw = input.value.trim();
+    const v = raw === '' ? UNLIMITED : Math.max(0, Math.min(UNLIMITED, Math.round(Number(raw) || 0)));
+    input.value = show(v);
     onChange(v);
   });
   return h('label', { class: 'field' }, h('span', { text: label }), input);
@@ -146,10 +148,10 @@ function openSettings(): void {
     h(
       'div',
       { class: 'sheet-text' },
-      h('h3', { text: 'Tageslimits pro Stapel' }),
+      h('h3', { text: 'Tageslimits pro Stapel (Standard: ohne Limit)' }),
       numberField('Neue Karten pro Tag', store.settings.newPerDay, (v) => void store.saveSettings({ ...store.settings, newPerDay: v }).then(showDecks)),
       numberField('Wiederholungen pro Tag', store.settings.reviewsPerDay, (v) => void store.saveSettings({ ...store.settings, reviewsPerDay: v }).then(showDecks)),
-      h('p', { class: 'hint', text: 'Der neue Lerntag beginnt jeweils um 4:00 Uhr nachts.' }),
+      h('p', { class: 'hint', text: 'Feld leer lassen = ohne Limit. Der neue Lerntag beginnt jeweils um 4:00 Uhr nachts.' }),
       h('h3', { text: 'Stapel' }),
       ...(deckRows.length ? deckRows : [h('p', { class: 'hint', text: 'Noch keine Stapel vorhanden.' })]),
       h('h3', { text: 'Tastatur' }),

@@ -11,7 +11,10 @@ export interface Limits {
   reviewsPerDay: number;
 }
 
-export const DEFAULT_LIMITS: Limits = { newPerDay: 20, reviewsPerDay: 200 };
+/** Wert für „ohne Limit“ (als Zahl, damit er sich im Backup als JSON speichern lässt). */
+export const UNLIMITED = 99999;
+
+export const DEFAULT_LIMITS: Limits = { newPerDay: UNLIMITED, reviewsPerDay: UNLIMITED };
 
 /** Erledigte Karten pro Stapel am heutigen Tag. */
 export interface DailyDone {

@@ -59,6 +59,7 @@ export class AppStore {
     this.cards = new Map(cards.map((c) => [c.id, c]));
     this.daily = new Map(daily.map((d) => [d.key, d]));
     if (settings) this.settings = { ...DEFAULT_LIMITS, ...(settings.value as Limits) };
+    if (this.settings.newPerDay === 20 && this.settings.reviewsPerDay === 200) this.settings = { ...DEFAULT_LIMITS };
     if (collapsed) this.collapsed = new Set(collapsed.value as string[]);
     this.cleanupDaily();
   }
