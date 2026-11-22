@@ -1,7 +1,7 @@
 process.env.TZ = 'Europe/Berlin';
 
 import { describe, expect, it } from 'vitest';
-import { buildQueues, buildTree, countsOf, findNode, pickNext, type DailyDone } from '../src/sched/queue';
+import { buildQueues, buildTree, countsOf, DEFAULT_LIMITS, findNode, pickNext, type DailyDone } from '../src/sched/queue';
 import { CardType, Queue, type Card } from '../src/sched/types';
 import { dayNumber } from '../src/sched/time';
 
@@ -37,6 +37,13 @@ describe('Stapelbaum', () => {
 });
 
 describe('Tageslimits', () => {
+  it('standardmäßig ohne Limit', () => {
+    const cards = Array.from({ length: 300 }, () => card('A', 'new'));
+    const node = buildTree(['A'], cards)[0];
+    const q = buildQueues(node, { now: NOW, limits: DEFAULT_LIMITS, done: () => ({ newDone: 50, revDone: 0 }) });
+    expect(countsOf(q).newCount).toBe(300);
+  });
+
   it('höchstens 20 neue Karten pro Tag', () => {
     const cards = Array.from({ length: 30 }, () => card('A', 'new'));
     const node = buildTree(['A'], cards)[0];

@@ -10,7 +10,7 @@ Stapel und seinen Lernfortschritt selbst (IndexedDB).
 - Stapel mit Unterstapeln (`3. Semester::Wirtschaftsrecht`), Lernfortschritt wird übernommen
 - Doppelter Import erzeugt keine Duplikate (der eigene Fortschritt bleibt erhalten)
 - Lernalgorithmus wie Anki (SM-2, Standardoptionen, Fuzz, Tageswechsel um 4 Uhr)
-- Tageslimits (20 neue / 200 Wiederholungen pro Stapel, einstellbar über das Zahnrad)
+- Standardmäßig ohne Tageslimit (Limits pro Stapel über das Zahnrad einstellbar)
 - Bilder aus den Paketen, Lückentext, umgekehrte Karten
 - Rückgängig, Tastaturkürzel (Leertaste, 1–4, Z), Backup als JSON-Datei
 - Offline nutzbar, „Zum Home-Bildschirm“ wie eine echte App

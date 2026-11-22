@@ -156,18 +156,18 @@ describe('Import in die App', () => {
     });
     await store.applyImport(await parseApkg(other, loadSqlNode, NOW), NOW);
     const fr = findNode(store.tree(), 'Französisch')!;
-    expect(countsOf(store.queuesFor(fr, NOW))).toEqual({ newCount: 20, learnCount: 0, reviewCount: 0 });
+    expect(countsOf(store.queuesFor(fr, NOW))).toEqual({ newCount: 25, learnCount: 0, reviewCount: 0 });
     expect(store.decks.has('Englisch')).toBe(true); // vorheriger Import noch da
 
     const q = store.queuesFor(fr, NOW);
     const first = q.newCards[0];
     expect(first.fields[0]).toBe('F0'); // Reihenfolge bleibt erhalten
     await store.answer(first, 3, 'new', NOW);
-    expect(countsOf(store.queuesFor(findNode(store.tree(), 'Französisch')!, NOW))).toEqual({ newCount: 19, learnCount: 1, reviewCount: 0 });
+    expect(countsOf(store.queuesFor(findNode(store.tree(), 'Französisch')!, NOW))).toEqual({ newCount: 24, learnCount: 1, reviewCount: 0 });
 
     const restored = await store.undo();
     expect(restored!.id).toBe(first.id);
-    expect(countsOf(store.queuesFor(findNode(store.tree(), 'Französisch')!, NOW))).toEqual({ newCount: 20, learnCount: 0, reviewCount: 0 });
+    expect(countsOf(store.queuesFor(findNode(store.tree(), 'Französisch')!, NOW))).toEqual({ newCount: 25, learnCount: 0, reviewCount: 0 });
   });
 
   it('Backup exportieren und wieder einspielen', async () => {
